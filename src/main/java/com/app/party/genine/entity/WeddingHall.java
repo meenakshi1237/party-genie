@@ -15,10 +15,10 @@ import lombok.Data;
 @Data
 @DiscriminatorValue("weddinghall")
 public class WeddingHall extends Venue{
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "weddingHall_seq_gen")
-	@SequenceGenerator(name = "weddingHall_seq_gen", allocationSize = 1, initialValue = 1, sequenceName = "weddingHall_sequence")
-	private int id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "weddingHall_seq_gen")
+//	@SequenceGenerator(name = "weddingHall_seq_gen", allocationSize = 1, initialValue = 1, sequenceName = "weddingHall_sequence")
+//	private int id;
 	private int capacity;
 	private String foodType;
 	private Availability liquor;
