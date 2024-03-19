@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.app.party.genine.repository.BookingRepository;
 
+@Repository
 public class BookingDao {
 	@Autowired
 	private BookingRepository bookingRepository;

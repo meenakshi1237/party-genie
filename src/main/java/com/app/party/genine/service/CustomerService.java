@@ -9,4 +9,5 @@ import com.app.party.genine.dao.CustomerDao;
 public class CustomerService {
 	@Autowired
 	private CustomerDao customerDao;
+	
 }
