@@ -8,13 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Data;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 @DiscriminatorColumn(name = "venue_type")
 public  class Venue {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "farmHouse_id_gen")
-//	@SequenceGenerator(name = "ven_id_gen", allocationSize = 1, initialValue = 1, sequenceName = "farmHouse_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "ven_id_gen")
+	@SequenceGenerator(name = "ven_id_gen", allocationSize = 101, initialValue = 1, sequenceName = "venue_sequence")
 	private int id;
 }
