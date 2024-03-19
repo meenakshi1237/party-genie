@@ -14,7 +14,7 @@ import jakarta.persistence.SequenceGenerator;
 @DiscriminatorColumn(name = "venue_type")
 public  class Venue {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "farmHouse_id_gen")
-//	@SequenceGenerator(name = "ven_id_gen", allocationSize = 1, initialValue = 1, sequenceName = "farmHouse_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "ven_id_gen")
+	@SequenceGenerator(name = "ven_id_gen", allocationSize = 1, initialValue = 101, sequenceName = "farmHouse_sequence")
 	private int id;
 }

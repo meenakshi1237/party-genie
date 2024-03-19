@@ -13,7 +13,7 @@ import lombok.Data;
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "cus_id_gen")
-	@SequenceGenerator(name = "cus_id_gen",initialValue = 1001,allocationSize = 1)
+	@SequenceGenerator(name = "cus_id_gen",initialValue = 1001,allocationSize = 1,sequenceName = "cus_seq_gen")
 	private int id;
 	@Column(nullable = false)
 	private String name;
