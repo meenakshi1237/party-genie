@@ -14,5 +14,6 @@ public class PartyHallDao {
 	public PartyHall save(PartyHall partyHall) {
 		return partyHallRepository.save(partyHall);
 	}
-
+	
+	
 }

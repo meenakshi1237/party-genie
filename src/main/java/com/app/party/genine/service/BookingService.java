@@ -3,13 +3,13 @@ package com.app.party.genine.service;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import org.hibernate.query.ReturnableType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.app.party.genine.dao.BookingDao;
+import com.app.party.genine.dao.CustomerDao;
 import com.app.party.genine.dto.BookingRequest;
 import com.app.party.genine.dto.BookingResponse;
 import com.app.party.genine.dto.CustomerResponse;
@@ -26,8 +26,6 @@ import com.app.party.genine.exceptions.VenueAlreadyBookedException;
 import com.app.party.genine.exceptions.VenueNotFoundException;
 import com.app.party.genine.repository.CustomerRepository;
 import com.app.party.genine.repository.VenueRepository;
-
-import jakarta.persistence.DiscriminatorValue;
 @Service
 public class BookingService {
 	@Autowired
@@ -36,10 +34,13 @@ public class BookingService {
 	private CustomerRepository customerRepository;
 	@Autowired
 	private VenueRepository<Venue> venueRepository;
+	@Autowired
+	private CustomerDao customerDao;
 	
 	public ResponseEntity<ResponseStructure<BookingResponse>> createBooking(BookingRequest bookingRequest){
 		Booking booking=new Booking();
-		Customer customer=customerRepository.findById(bookingRequest.getCustomerId()).orElseThrow(()->new CustomerNotFoundException("Customer Not Found"));
+		Customer customer=customerDao.getCustomerById(bookingRequest.getCustomerId());
+		if(customer!=null) {
 			Venue venue=venueRepository.findById(bookingRequest.getVenueId()).orElseThrow(()->new VenueNotFoundException("Venue Not Found"));
 			if(venue instanceof FarmHouse) {
 				FarmHouse farmHouse=(FarmHouse)venue;
@@ -75,7 +76,6 @@ public class BookingService {
 			booking.setCustomer(customer);
 			booking.setEventDate(bookingRequest.getEventDate());
 			booking.setVenue(venue);
-			booking.setTillDate(null);
 			Date endDate= Date.valueOf(calculateEndDate(bookingRequest.getEventDate().toLocalDate(),bookingRequest.getNoOFDays()));
 			booking.setTillDate(endDate);
 			
@@ -101,9 +101,14 @@ public class BookingService {
 			ResponseStructure<BookingResponse> responStructure=new ResponseStructure<BookingResponse>();
 			responStructure.setData(bookingResponse);
 			responStructure.setMessage("Your Venue Booked Sucessfully");
-			responStructure.setStatusCode(HttpStatus.OK.value());
+			responStructure.setStatusCode(HttpStatus.CREATED.value());
 			return new ResponseEntity<ResponseStructure<BookingResponse>>(responStructure,HttpStatus.CREATED);
 		
+		}
+		else {
+			throw new CustomerNotFoundException("Customer Not Found");
+		}
+			
 	}
 	public  LocalDate calculateEndDate(LocalDate startDate, int numberOfDays) {
 //		startDate.plusDays(numberOfDays);
