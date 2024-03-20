@@ -12,10 +12,11 @@ import jakarta.persistence.SequenceGenerator;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "venue_type")
+
 public class Venue {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "ven_id_gen")
-	@SequenceGenerator(name = "ven_id_gen", allocationSize = 1, initialValue = 101, sequenceName = "venue_sequence")
+	@SequenceGenerator(name = "ven_id_gen",initialValue = 101, allocationSize = 1 , sequenceName = "venue_sequence")
 	private int id;
 }
