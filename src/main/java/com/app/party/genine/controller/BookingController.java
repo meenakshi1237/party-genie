@@ -11,7 +11,5 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 	
-//	public ResponseEntity<ResponseStructure<Booking>> createBooking(BookingRequest bookingRequest){
-//		
-//	}
+	
 }
