@@ -8,7 +8,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.app.party.genine.entity.Admin;
 import com.app.party.genine.repository.AdminRepository;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
+
 @SpringBootApplication
+@OpenAPIDefinition(info=@Info(title = "Partie Genine Application OPEN-API",version = "1.0.0",description = "Partie Genine Application API with Spring boot"),
+servers = {
+		@Server (url = "http://localhost:8080",description = " Development Partie Genine Application OPEN API url"),
+		@Server (url = "http://localhost:8081",description = "Testing Partie Genine Application OPEN API url")
+}
+)
 public class PartyGenineApplication implements CommandLineRunner {
 	
 	@Autowired
@@ -29,5 +39,7 @@ public class PartyGenineApplication implements CommandLineRunner {
 			adminRepository.save(admin);
 		}
 	}
+	
+	  
 
 }

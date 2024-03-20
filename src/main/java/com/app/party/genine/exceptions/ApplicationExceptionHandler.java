@@ -1,6 +1,8 @@
 package com.app.party.genine.exceptions;
 
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -75,15 +77,33 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(VenueAlreadyBookedException.class)
+	public ResponseEntity<ResponseStructure<String>> venueAlreadyBooked(VenueAlreadyBookedException exception) {
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+		responseStructure.setData("Not Found");
+		responseStructure.setMessage("venue not found");
+		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(FeildValidationException.class)
 	public ResponseEntity<ResponseStructure<String>> catchFeildValidationException(FeildValidationException exception){
 		ResponseStructure<String> rs=new ResponseStructure<String>();
-		rs.setData("Please check your request");
-		rs.setMessage(exception.getMessage());
+		rs.setData(exception.getMessage());
+		rs.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
 		rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.BAD_REQUEST);
 	}
-
+	
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public ResponseEntity<ResponseStructure<String>> catchSqlConstraintException(SQLIntegrityConstraintViolationException exception){
+		ResponseStructure<String> rs=new ResponseStructure<String>();
+		rs.setData(exception.getMessage());
+		rs.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		
+		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.BAD_REQUEST);
+	}
 }

@@ -1,5 +1,7 @@
 package com.app.party.genine.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +17,8 @@ public class WeddingHallDao {
 	public WeddingHall save(WeddingHall weddingHall) {
 		return weddingHallRepository.save(weddingHall);
 	}
-
+	
+	public List<WeddingHall> getAll(){
+		return weddingHallRepository.findAll();
+	}
 }
