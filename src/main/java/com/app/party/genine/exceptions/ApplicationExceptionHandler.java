@@ -48,8 +48,8 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 	@ExceptionHandler(FeildValidationException.class)
 	public ResponseEntity<ResponseStructure<String>> catchFeildValidationException(FeildValidationException exception){
 		ResponseStructure<String> rs=new ResponseStructure<String>();
-		rs.setData("Please check your request");
-		rs.setMessage(exception.getMessage());
+		rs.setData(exception.getMessage());
+		rs.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
 		rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.BAD_REQUEST);

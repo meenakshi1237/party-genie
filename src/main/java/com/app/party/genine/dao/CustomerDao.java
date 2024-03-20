@@ -38,6 +38,6 @@ public class CustomerDao {
 	}
 	
 	public Customer login(String email,String password) {
-		return customerRepository.findBYEmailAndPassword(email, password).orElse(null);
+		return customerRepository.findByEmailAndPassword(email, password).orElse(null);
 	}
 }

@@ -29,5 +29,7 @@ public class PartyGenineApplication implements CommandLineRunner {
 			adminRepository.save(admin);
 		}
 	}
+	
+	  
 
 }
