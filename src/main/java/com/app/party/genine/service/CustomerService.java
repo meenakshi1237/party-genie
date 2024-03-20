@@ -1,5 +1,6 @@
 package com.app.party.genine.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,10 @@ import com.app.party.genine.dto.CustomerRequest;
 import com.app.party.genine.dto.CustomerResponse;
 import com.app.party.genine.dto.ResponseStructure;
 import com.app.party.genine.entity.Customer;
+import com.app.party.genine.entity.FarmHouse;
+import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
+import com.app.party.genine.entity.WeddingHall;
 import com.app.party.genine.exceptions.IdNotPresentException;
 import com.app.party.genine.repository.VenueRepository;
 
@@ -141,5 +145,33 @@ public class CustomerService {
 		rs.setStatusCode(HttpStatus.FOUND.value());
 		
 		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.FOUND);
+	}
+	
+	public ResponseEntity<ResponseStructure<List<Venue>>> getVenueByLocation(String location){
+		List<Venue> venues=new ArrayList<Venue>();
+		List<Venue> allVenues=venueRepository.findAll();
+		for(Venue venue:allVenues) {
+			if(venue instanceof PartyHall) {
+				if(((PartyHall) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+			else if(venue instanceof FarmHouse) {
+				if(((FarmHouse) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+			else{
+				if(((WeddingHall) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+		}
+		ResponseStructure<List<Venue>> rs = new ResponseStructure<List<Venue>>();
+		rs.setData(venues);
+		rs.setMessage(HttpStatus.OK.getReasonPhrase());
+		rs.setStatusCode(HttpStatus.OK.value());
+		
+		return new ResponseEntity<ResponseStructure<List<Venue>>>(rs,HttpStatus.OK);
 	}
 }
