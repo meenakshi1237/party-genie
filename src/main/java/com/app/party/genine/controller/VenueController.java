@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.party.genine.dto.VenueRequest;
 import com.app.party.genine.service.VenueService;
+import com.app.party.genine.util.BookingStatus;
 
 @RestController
 @RequestMapping("/admin/venues")
@@ -32,7 +33,7 @@ public class VenueController {
 	}
 	
 	@PatchMapping("/{adminId}/{venueId}/{status}")
-	public ResponseEntity<?> updateVenueStatus(@PathVariable int adminId,@PathVariable int venueId,@RequestParam String status){
+	public ResponseEntity<?> updateVenueStatus(@PathVariable int adminId,@PathVariable int venueId,@RequestParam BookingStatus status){
 		return venueService.updateVenueStatus(adminId,venueId,status);
 	}
 	

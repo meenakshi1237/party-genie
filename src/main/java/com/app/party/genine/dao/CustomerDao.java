@@ -13,7 +13,6 @@ import com.app.party.genine.repository.CustomerRepository;
 
 
 @Repository
-
 public class CustomerDao {
 	
 	@Autowired
@@ -35,9 +34,5 @@ public class CustomerDao {
 			return true;
 		}
 		return false;
-	}
-	
-	public Customer login(String email,String password) {
-		return customerRepository.findByEmailAndPassword(email, password).orElse(null);
 	}
 }
