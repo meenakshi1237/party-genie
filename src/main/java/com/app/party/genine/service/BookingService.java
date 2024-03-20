@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.app.party.genine.dao.BookingDao;
 import com.app.party.genine.dto.BookingRequest;
 import com.app.party.genine.dto.BookingResponse;
+import com.app.party.genine.dto.CustomerResponse;
 import com.app.party.genine.dto.ResponseStructure;
 import com.app.party.genine.entity.Booking;
 import com.app.party.genine.entity.Customer;
@@ -19,6 +20,7 @@ import com.app.party.genine.entity.FarmHouse;
 import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
+import com.app.party.genine.exceptions.BookingNotFoundException;
 import com.app.party.genine.exceptions.CustomerNotFoundException;
 import com.app.party.genine.exceptions.VenueAlreadyBookedException;
 import com.app.party.genine.exceptions.VenueNotFoundException;
@@ -32,8 +34,10 @@ public class BookingService {
 	private BookingDao bookingDao;
 	@Autowired
 	private CustomerRepository customerRepository;
+	@Autowired
 	private VenueRepository<Venue> venueRepository;
-	public ResponseEntity<ResponseStructure<Booking>> createBooking(BookingRequest bookingRequest){
+	
+	public ResponseEntity<ResponseStructure<BookingResponse>> createBooking(BookingRequest bookingRequest){
 		Booking booking=new Booking();
 		Customer customer=customerRepository.findById(bookingRequest.getCustomerId()).orElseThrow(()->new CustomerNotFoundException("Customer Not Found"));
 			Venue venue=venueRepository.findById(bookingRequest.getVenueId()).orElseThrow(()->new VenueNotFoundException("Venue Not Found"));
@@ -76,18 +80,60 @@ public class BookingService {
 			booking.setTillDate(endDate);
 			
 			Booking saveBooking=bookingDao.createBooking(booking);
-			ResponseStructure<Booking> responStructure=new ResponseStructure<Booking>();
-			responStructure.setData(saveBooking);
+			
+			CustomerResponse customerResponse=new CustomerResponse();
+			customerResponse.setName(customer.getName());
+			customerResponse.setEmail(customer.getEmail());
+			customerResponse.setId(customer.getId());
+			customerResponse.setIdNumber(customer.getIdNumber());
+			customerResponse.setIdProof(customer.getIdProof());
+			
+			BookingResponse bookingResponse=new BookingResponse();
+			bookingResponse.setBookingId(saveBooking.getId());
+			bookingResponse.setCustomerResponse(customerResponse);
+			bookingResponse.setEventDate(saveBooking.getEventDate());
+			bookingResponse.setNoOfDays(saveBooking.getNoOfDays());
+			bookingResponse.setTillDate(saveBooking.getTillDate());
+			bookingResponse.setTotalCharges(saveBooking.getTotalCharges());
+			bookingResponse.setVenue(saveBooking.getVenue());
+			
+			
+			ResponseStructure<BookingResponse> responStructure=new ResponseStructure<BookingResponse>();
+			responStructure.setData(bookingResponse);
 			responStructure.setMessage("Your Venue Booked Sucessfully");
 			responStructure.setStatusCode(HttpStatus.OK.value());
-			return new ResponseEntity<ResponseStructure<Booking>>(responStructure,HttpStatus.OK);
+			return new ResponseEntity<ResponseStructure<BookingResponse>>(responStructure,HttpStatus.CREATED);
 		
 	}
 	public  LocalDate calculateEndDate(LocalDate startDate, int numberOfDays) {
-		return startDate.plusDays(numberOfDays);
+//		startDate.plusDays(numberOfDays);
+		return startDate.plusDays(numberOfDays-1);
 	}
 	
-//	public ResponseEntity<ResponseStructure<BookingResponse>> updateBooking(BookingRequest bookingRequest,int bookingId){
-//		Booking booking=bookingDao.findByBookingId(bookingId);
-//	}
+	public ResponseEntity<ResponseStructure<String>> calcelBooking(int bookingId){
+		Booking booking=bookingDao.findByBookingId(bookingId);
+		if(booking!=null) {
+			boolean status=bookingDao.cancelBooking(booking);
+			if(status) {
+				ResponseStructure<String> responseStructure=new ResponseStructure<String>();
+				responseStructure.setData("Boooking canceled sucessfully");
+				responseStructure.setMessage("Sucess");
+				responseStructure.setStatusCode(HttpStatus.OK.value());
+				return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.OK);
+			}
+			else {
+				ResponseStructure<String> responseStructure=new ResponseStructure<String>();
+				responseStructure.setData("Something went wrong");
+				responseStructure.setMessage("please try after sometime");
+				responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
+				return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.BAD_REQUEST);
+			}
+			
+		}
+		else {
+			throw new BookingNotFoundException("There is no bookings with given id");
+		}
+	}
+	
+	
 }

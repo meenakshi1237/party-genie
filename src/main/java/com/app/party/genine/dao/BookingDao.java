@@ -30,4 +30,14 @@ public class BookingDao {
 			return null;
 		}
 	}
+	
+	public boolean cancelBooking(Booking booking) {
+		 if(booking!=null) {
+			 bookingRepository.delete(booking);
+			 return true;
+		 }
+		 else {
+			 return false;
+		 }
+	}
 }

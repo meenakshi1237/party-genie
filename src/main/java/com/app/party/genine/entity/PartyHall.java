@@ -5,6 +5,8 @@ import com.app.party.genine.util.BookingStatus;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,10 +23,13 @@ public class PartyHall extends Venue{
 //	private int id;
 	private int capacity;
 	private String foodType;
+	
 	private Availability liquor;
 	private double menuPricePerPlate;
+	
 	private Availability parking;
 	private int noOfPeople;
 	private String location;
+	
 	private BookingStatus status;
 }
