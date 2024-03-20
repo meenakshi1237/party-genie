@@ -38,7 +38,9 @@ public class FarmHouse extends Venue{
 	
 	@Column(nullable = false)
 	private String location;
+
 	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private BookingStatus status;
 }
