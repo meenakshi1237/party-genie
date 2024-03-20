@@ -180,6 +180,31 @@ public class VenueService {
 			throw new UnauthorizedException();
 		}
 	}
+
+	public ResponseEntity<?> updateVenueStatus(int adminId, int venueId, String status) {
+		
+		Optional<Admin> validAdmin=adminDao.findAdmin(adminId);
+		
+		if(validAdmin.isPresent()) {
+			
+			for(Venue venue:validAdmin.get().getVenueList()) {
+				if(venue.getId()==venueId) {
+					
+					if(venue instanceof FarmHouse) {
+						
+					}
+					
+				}else {
+					throw new InvalidVenueException("Venue Id is not found");
+				}
+			}
+			
+		}else {
+			throw new UnauthorizedException();
+		}
+		
+		return null;
+	}
 	
 	
 
