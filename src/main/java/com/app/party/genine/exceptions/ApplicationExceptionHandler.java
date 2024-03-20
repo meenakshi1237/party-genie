@@ -44,4 +44,14 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		
 		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.BAD_GATEWAY);
 	}
+	
+	@ExceptionHandler(FeildValidationException.class)
+	public ResponseEntity<ResponseStructure<String>> catchFeildValidationException(FeildValidationException exception){
+		ResponseStructure<String> rs=new ResponseStructure<String>();
+		rs.setData("Please check your request");
+		rs.setMessage(exception.getMessage());
+		rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		
+		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.BAD_REQUEST);
+	}
 }
