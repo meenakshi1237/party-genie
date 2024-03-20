@@ -12,6 +12,7 @@ import lombok.Data;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 @DiscriminatorColumn(name = "venue_type")
 @Data
 public class Venue {

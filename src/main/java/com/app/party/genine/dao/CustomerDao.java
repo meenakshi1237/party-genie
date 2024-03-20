@@ -36,4 +36,8 @@ public class CustomerDao {
 		}
 		return false;
 	}
+	
+	public Customer login(String email,String password) {
+		return customerRepository.findByEmailAndPassword(email, password).orElse(null);
+	}
 }
