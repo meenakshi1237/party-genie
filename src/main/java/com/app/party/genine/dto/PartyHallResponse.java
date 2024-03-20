@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class PartyHallResponse {
 
-	private int id;
+	
 
 	private int capacity;
 	

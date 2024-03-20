@@ -3,19 +3,14 @@ package com.app.party.genine.dao;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+
+import org.springframework.stereotype.Repository;
 
 import com.app.party.genine.entity.Admin;
-import com.app.party.genine.entity.FarmHouse;
-import com.app.party.genine.entity.PartyHall;
-import com.app.party.genine.entity.Venue;
-import com.app.party.genine.entity.WeddingHall;
-import com.app.party.genine.exceptions.InvalidVenueException;
-import com.app.party.genine.exceptions.UnauthorizedException;
+
 import com.app.party.genine.repository.AdminRepository;
 
-@Component
+@Repository
 public class AdminDao {
 
 	@Autowired
@@ -25,6 +20,13 @@ public class AdminDao {
 		
 		return adminRepository.findById(id);
 	}
+
+	public Admin save(Optional<Admin> validAdmin) {
+		return adminRepository.save(validAdmin.get());
+	}
 	
-	
+	public Admin updateAdminsVenue(Admin validAdmin) {
+		return adminRepository.save(validAdmin);
+	}
+
 }

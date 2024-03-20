@@ -1,5 +1,6 @@
 package com.app.party.genine.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -32,5 +33,5 @@ public class Admin {
 	private long phone;
 	
 	@OneToMany
-	private List<Venue> venueList;
+	private List<Venue> venueList=new ArrayList<Venue>();
 }
