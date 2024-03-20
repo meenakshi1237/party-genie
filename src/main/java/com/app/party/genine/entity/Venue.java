@@ -14,9 +14,11 @@ import lombok.Data;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @DiscriminatorColumn(name = "venue_type")
-public  class Venue {
+
+public class Venue {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY,generator = "ven_id_gen")
-	@SequenceGenerator(name = "ven_id_gen", allocationSize = 101, initialValue = 1, sequenceName = "venue_sequence")
+	@SequenceGenerator(name = "ven_id_gen",initialValue = 101, allocationSize = 1 , sequenceName = "venue_sequence")
 	private int id;
 }

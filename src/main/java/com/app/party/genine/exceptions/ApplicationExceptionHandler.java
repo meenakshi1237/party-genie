@@ -1,30 +1,40 @@
 package com.app.party.genine.exceptions;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.app.party.genine.dto.ResponseStructure;
 
-public class ApplicationExceptionHandler {
-
-	@ExceptionHandler(CustomerNotFoundException.class)
-	public ResponseEntity<ResponseStructure<String>> custommerNotFoundException(CustomerNotFoundException exception) {
-		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
-		responseStructure.setData("Not Found");
-		responseStructure.setMessage("user not found");
-		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
+@ControllerAdvice
+public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+	
+		
+	@ExceptionHandler(InvalidVenueException.class)
+	public ResponseEntity<ResponseStructure<String>> invalidExceptionHandler(InvalidVenueException exception){
+	
+		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
+		responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		responseStructure.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		responseStructure.setData("Invalid venue type is not allowed to save");
+		
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.BAD_REQUEST);
 	}
-
-	@ExceptionHandler(VenueNotFoundException.class)
-	public ResponseEntity<ResponseStructure<String>> venueNotFoundException(VenueNotFoundException exception) {
-		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
-		responseStructure.setData("Not Found");
-		responseStructure.setMessage("venue not found");
-		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
+	
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<ResponseStructure<String>> unauthorizedExceptionHandler(UnauthorizedException exception){
+		
+		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
+		responseStructure.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+		responseStructure.setMessage(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+		responseStructure.setData("User is not Authorized to save the venue");
+		
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.UNAUTHORIZED);
 	}
+	
 
 	@ExceptionHandler(IdNotPresentException.class)
 	public ResponseEntity<ResponseStructure<String>> catchIdNotPresentException(IdNotPresentException exception) {
@@ -46,6 +56,23 @@ public class ApplicationExceptionHandler {
 
 		return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.BAD_GATEWAY);
 
+	}
+	@ExceptionHandler(CustomerNotFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> custommerNotFoundException(CustomerNotFoundException exception) {
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+		responseStructure.setData("Not Found");
+		responseStructure.setMessage("user not found");
+		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(VenueNotFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> venueNotFoundException(VenueNotFoundException exception) {
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+		responseStructure.setData("Not Found");
+		responseStructure.setMessage("venue not found");
+		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
 	}
 
 }
