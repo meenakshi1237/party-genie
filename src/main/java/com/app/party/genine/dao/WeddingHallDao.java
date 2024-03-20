@@ -2,7 +2,6 @@ package com.app.party.genine.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.app.party.genine.entity.WeddingHall;
 import com.app.party.genine.repository.WeddingHallRepository;
 
@@ -14,6 +13,11 @@ public class WeddingHallDao {
 
 	public WeddingHall save(WeddingHall weddingHall) {
 		return weddingHallRepository.save(weddingHall);
+	}
+	
+	public String delete(WeddingHall weddingHall) {
+		weddingHallRepository.delete(weddingHall);
+		return "Wedding Hall deleted successfully";
 	}
 
 }

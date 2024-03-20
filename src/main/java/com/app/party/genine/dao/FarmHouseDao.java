@@ -15,4 +15,9 @@ public class FarmHouseDao {
 	public FarmHouse save(FarmHouse farmHouse) {
 		return farmHouseRepository.save(farmHouse);
 	}
+	
+	public String delete(FarmHouse farmHouse) {
+		farmHouseRepository.delete(farmHouse);
+		return "FarmHouse Hall deleted successfully";
+	}
 }
