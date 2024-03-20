@@ -10,20 +10,20 @@ import lombok.Data;
 @Data
 public class VenueRequest {
 
-	@PositiveOrZero(message = "No Negatives Allowed")
+	@PositiveOrZero(message="No negatives allowed")
 	private int capacity;
 	
-	@Pattern(regexp = "^[A-Za-z0-9\\s]*$",message = "Invalid Name Format")
+	@Pattern(regexp="^[A-Za-z0-9\\s]*$",message="Invalid Name Format")
 	private String foodType;
 	
-	@PositiveOrZero(message = "No Negatives Allowed")
+	@PositiveOrZero(message="No negatives allowed")
 	private double rentPerDay;
 	
 	private Availability parking;
 	
 	private Availability swimmingPool;
 	
-	@PositiveOrZero(message = "No Negatives Allowed")
+	@PositiveOrZero(message="No negatives allowed")
 	private int noOfRooms;
 	
 	private String location;
@@ -32,10 +32,9 @@ public class VenueRequest {
 	
 	private Availability liquor;
 	
-	@PositiveOrZero(message = "No Negatives Allowed")
+	@PositiveOrZero(message="No negatives allowed")
 	private double menuPricePerPlate;
 	
-	@PositiveOrZero(message = "No Negatives Allowed")
+	@PositiveOrZero(message="No negatives allowed")
 	private int noOfPeople;
-	
 }

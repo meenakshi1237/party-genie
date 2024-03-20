@@ -18,4 +18,8 @@ public class AdminDao {
 		
 		return adminRepository.findById(id);
 	}
+
+	public Admin save(Optional<Admin> validAdmin) {
+		return adminRepository.save(validAdmin.get());
+	}
 }

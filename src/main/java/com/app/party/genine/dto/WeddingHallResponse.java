@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class WeddingHallResponse {
 
-	private int id;
+	
 	
 	private int capacity;
 	

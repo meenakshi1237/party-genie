@@ -7,6 +7,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,18 +27,27 @@ public class FarmHouse extends Venue{
 //	private int id;
 	@Column(nullable = false)
 	private int capacity;
+	
 	@Column(nullable = false)
 	private String foodType;
+	
 	@Column(nullable = false)
 	private double rentPerDay;
+	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Availability parking;
+	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Availability swimmingPool;
+	
 	@Column(nullable = false)
 	private int noOfRooms;
+	
 	@Column(nullable = false)
 	private String location;
+	
 	@Column(nullable = false)
 	private BookingStatus status;
 }

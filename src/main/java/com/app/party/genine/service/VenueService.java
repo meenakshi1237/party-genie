@@ -1,11 +1,14 @@
 package com.app.party.genine.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import com.app.party.genine.dao.AdminDao;
 import com.app.party.genine.dao.FarmHouseDao;
@@ -19,6 +22,7 @@ import com.app.party.genine.dto.WeddingHallResponse;
 import com.app.party.genine.entity.Admin;
 import com.app.party.genine.entity.FarmHouse;
 import com.app.party.genine.entity.PartyHall;
+import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
 import com.app.party.genine.exceptions.InvalidVenueException;
 import com.app.party.genine.exceptions.UnauthorizedException;
@@ -42,6 +46,8 @@ public class VenueService {
 		
 		Optional<Admin> validAdmin=adminDao.findAdmin(id);
 		
+		List<Venue> venueList=new ArrayList<Venue>();
+		
 		if(validAdmin.isPresent()) {
 		
 		if(venueType.equalsIgnoreCase("farm house")){
@@ -57,6 +63,10 @@ public class VenueService {
 			farmHouse.setStatus(venueRequest.getStatus());
 			
 			FarmHouse savedFarmHouse=farmHouseDao.save(farmHouse);
+			
+			venueList.add(savedFarmHouse);
+			validAdmin.get().setVenueList(venueList);
+			adminDao.save(validAdmin);
 			
 			FarmHouseResponse farmHouseResponse=new FarmHouseResponse();
 			farmHouseResponse.setCapacity(savedFarmHouse.getCapacity());
@@ -86,7 +96,13 @@ public class VenueService {
 			weddingHall.setLocation(venueRequest.getLocation());
 			weddingHall.setStatus(venueRequest.getStatus());
 			
+			
+			
 			WeddingHall savedWeddingHall=weddingHallDao.save(weddingHall);
+			
+			venueList.add(savedWeddingHall);
+			validAdmin.get().setVenueList(venueList);
+			adminDao.save(validAdmin);
 			
 			WeddingHallResponse weddingHallResponse=new WeddingHallResponse();
 			weddingHallResponse.setCapacity(savedWeddingHall.getCapacity());
@@ -117,6 +133,10 @@ public class VenueService {
 			
 			PartyHall savedPartyHall=partyHallDao.save(partyHall);
 			
+			venueList.add(savedPartyHall);
+			validAdmin.get().setVenueList(venueList);
+			adminDao.save(validAdmin);
+			
 			PartyHallResponse partyHallResponse=new PartyHallResponse();
 			partyHallResponse.setCapacity(savedPartyHall.getCapacity());
 			partyHallResponse.setFoodType(savedPartyHall.getFoodType());
@@ -139,8 +159,28 @@ public class VenueService {
 	}else {
 		throw new UnauthorizedException();
 	}
-		
-		
+			
 	}
+
+	public ResponseEntity<?> findAllVenues(int id) {
+		
+		Optional<Admin> validAdmin=adminDao.findAdmin(id);
+		
+		if(validAdmin.isPresent()) {
+			List<Venue> venueList=validAdmin.get().getVenueList();
+			
+			ResponseStructure<List<Venue>> response=new ResponseStructure<List<Venue>>();
+			response.setStatusCode(HttpStatus.FOUND.value());
+			response.setMessage("Fethed Successfully");
+			response.setData(venueList);
+			
+			return new ResponseEntity<ResponseStructure<List<Venue>>>(response,HttpStatus.FOUND);
+			
+		}else {
+			throw new UnauthorizedException();
+		}
+	}
+	
+	
 
 }
