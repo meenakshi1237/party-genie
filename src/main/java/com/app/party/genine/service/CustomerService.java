@@ -1,5 +1,7 @@
 package com.app.party.genine.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,17 @@ import com.app.party.genine.dto.CustomerRequest;
 import com.app.party.genine.dto.CustomerResponse;
 import com.app.party.genine.dto.ResponseStructure;
 import com.app.party.genine.entity.Customer;
+import com.app.party.genine.entity.Venue;
 import com.app.party.genine.exceptions.IdNotPresentException;
+import com.app.party.genine.repository.VenueRepository;
 
 @Service
 public class CustomerService {
 	@Autowired
 	private CustomerDao customerDao;
+	
+	@Autowired
+	private VenueRepository<Venue> venueRepository;
 	
 	public ResponseEntity<ResponseStructure<CustomerResponse>> customerRegister(CustomerRequest customerRequest){
 		
@@ -112,5 +119,27 @@ public class CustomerService {
 		rs.setStatusCode(HttpStatus.OK.value());
 		
 		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.OK);
+	}
+	
+	public ResponseEntity<ResponseStructure<List<Venue>>> getAllVenue(){
+		List<Venue> venueList = venueRepository.findAll();
+		
+		ResponseStructure<List<Venue>> rs = new ResponseStructure<List<Venue>>();
+		rs.setData(venueList);
+		rs.setMessage(HttpStatus.OK.getReasonPhrase());
+		rs.setStatusCode(HttpStatus.OK.value());
+		
+		return new ResponseEntity<ResponseStructure<List<Venue>>>(rs,HttpStatus.OK);
+	}
+	
+	public ResponseEntity<ResponseStructure<Customer>> loginCustomer(String email,String password){
+		Customer customer = customerDao.login(email, password);
+		
+		ResponseStructure<Customer> rs = new ResponseStructure<Customer>();
+		rs.setData(customer);
+		rs.setMessage(HttpStatus.FOUND.getReasonPhrase());
+		rs.setStatusCode(HttpStatus.FOUND.value());
+		
+		return new ResponseEntity<ResponseStructure<Customer>>(rs,HttpStatus.FOUND);
 	}
 }

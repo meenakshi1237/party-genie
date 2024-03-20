@@ -35,7 +35,6 @@ public class PartyHall extends Venue{
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-
 	private Availability parking;
 	
 	@Column(nullable = false)
@@ -47,6 +46,5 @@ public class PartyHall extends Venue{
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-
 	private BookingStatus status;
 }

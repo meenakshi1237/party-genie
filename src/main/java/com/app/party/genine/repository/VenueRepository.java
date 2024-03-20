@@ -7,5 +7,6 @@ import com.app.party.genine.entity.Venue;
 
 @Repository
 public interface VenueRepository<T extends Venue> extends JpaRepository<T, Integer>{
-
+	
+	
 }

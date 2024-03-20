@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.party.genine.dto.BookingRequest;
 import com.app.party.genine.dto.BookingResponse;
 import com.app.party.genine.dto.ResponseStructure;
-import com.app.party.genine.entity.Booking;
 import com.app.party.genine.service.BookingService;
 
 @RestController
@@ -21,6 +20,7 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 	
+
 	@PostMapping(value="/booking")
 	public ResponseEntity<ResponseStructure<BookingResponse>> createBooking(@RequestBody BookingRequest bookingRequest){
 		return bookingService.createBooking(bookingRequest);
@@ -30,4 +30,5 @@ public class BookingController {
 	public ResponseEntity<ResponseStructure<String>> cancelBooking(@RequestParam int bookingId){
 		return bookingService.calcelBooking(bookingId);
 	}
+
 }

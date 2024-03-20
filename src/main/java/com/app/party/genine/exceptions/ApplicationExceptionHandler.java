@@ -47,6 +47,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
 	}
 	
+
 	@ExceptionHandler(BookingNotFoundException.class)
 	public ResponseEntity<ResponseStructure<String>> bookingNotFoundException(BookingNotFoundException exception) {
 		ResponseStructure<String> structure = new ResponseStructure<String>();
@@ -73,6 +74,16 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		responseStructure.setMessage("venue not found");
 		responseStructure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(FeildValidationException.class)
+	public ResponseEntity<ResponseStructure<String>> catchFeildValidationException(FeildValidationException exception){
+		ResponseStructure<String> rs=new ResponseStructure<String>();
+		rs.setData("Please check your request");
+		rs.setMessage(exception.getMessage());
+		rs.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		
+		return new ResponseEntity<ResponseStructure<String>>(rs,HttpStatus.BAD_REQUEST);
 	}
 
 }

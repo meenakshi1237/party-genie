@@ -31,7 +31,6 @@ public class FarmHouse extends Venue{
 	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-
 	private Availability swimmingPool;
 	
 	@Column(nullable = false)
@@ -42,6 +41,6 @@ public class FarmHouse extends Venue{
 
 	
 	@Column(nullable = false)
-
+	@Enumerated(EnumType.STRING)
 	private BookingStatus status;
 }
