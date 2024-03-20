@@ -49,26 +49,31 @@ public class VenueService {
 
 		List<Venue> loc_venues = new ArrayList<Venue>();
 
-		for (Venue v : avl_venues) {
-			if (v instanceof PartyHall) {
-				PartyHall p = (PartyHall) v;
-				if (p.getLocation().equalsIgnoreCase(location)) {
-					loc_venues.add(p);
-				}
-			} else if (v instanceof WeddingHall) {
-				WeddingHall w = (WeddingHall) v;
-				if (w.getLocation().equalsIgnoreCase(location)) {
-					loc_venues.add(w);
-				}
+		if (!avl_venues.isEmpty()) {
+			for (Venue v : avl_venues) {
+				if (v instanceof PartyHall) {
+					PartyHall p = (PartyHall) v;
+					if (p.getLocation().equalsIgnoreCase(location)) {
+						loc_venues.add(p);
+					}
+				} else if (v instanceof WeddingHall) {
+					WeddingHall w = (WeddingHall) v;
+					if (w.getLocation().equalsIgnoreCase(location)) {
+						loc_venues.add(w);
+					}
 
-			} else if (v instanceof FarmHouse) {
-				FarmHouse f = (FarmHouse) v;
-				if (f.getLocation().equalsIgnoreCase(location)) {
-					loc_venues.add(f);
+				} else if (v instanceof FarmHouse) {
+					FarmHouse f = (FarmHouse) v;
+					if (f.getLocation().equalsIgnoreCase(location)) {
+						loc_venues.add(f);
+					}
+
+				}
+				else {
+					throw new InvalidVenueException("Venue at "+location+" not found" );
 				}
 
 			}
-
 		}
 
 		ResponseStructure<List<Venue>> response = new ResponseStructure<List<Venue>>();
