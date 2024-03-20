@@ -11,8 +11,8 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
 @Entity
-@Data
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 @DiscriminatorColumn(name = "venue_type")
 
 public class Venue {
