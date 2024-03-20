@@ -22,13 +22,17 @@ public class PartyHall extends Venue{
 	@Column(nullable = false)
 	private String foodType;
 	
+
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+
 	private Availability liquor;
 	
 	@Column(nullable = false)
 	private double menuPricePerPlate;
 	
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Availability parking;
@@ -39,6 +43,7 @@ public class PartyHall extends Venue{
 	@Column(nullable = false)
 	private String location;
 	
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private BookingStatus status;

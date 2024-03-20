@@ -1,6 +1,6 @@
 package com.app.party.genine.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.Data;
 @Data
@@ -10,4 +10,5 @@ public class BookingRequest {
 	private Date eventDate;
 	private int venueId;
 	private String venueType;
+	private int customerId;
 }

@@ -8,9 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.SequenceGenerator;
+import lombok.Data;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Data
 @DiscriminatorColumn(name = "venue_type")
 
 public class Venue {

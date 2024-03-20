@@ -19,16 +19,21 @@ public class WeddingHall extends Venue{
 	private int capacity;
 	@Column(nullable = false)
 	private String foodType;
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Availability liquor;
 	@Column(nullable = false)
 	private double rentPerDay;
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+
 	private Availability parking;
+	
 	@Column(nullable = false)
 	private String location;
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private BookingStatus status;
