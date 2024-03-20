@@ -20,4 +20,5 @@ public class PartyHallDao {
 	public List<PartyHall> getAll(){
 		return partyHallRepository.findAll();
 	}
+
 }

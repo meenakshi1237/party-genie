@@ -22,7 +22,9 @@ import com.app.party.genine.entity.FarmHouse;
 import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
+
 import com.app.party.genine.exceptions.FeildValidationException;
+
 import com.app.party.genine.exceptions.IdNotPresentException;
 import com.app.party.genine.exceptions.InvalidVenueException;
 import com.app.party.genine.repository.VenueRepository;
@@ -175,6 +177,7 @@ public class CustomerService {
 		return new ResponseEntity<ResponseStructure<Customer>>(rs, HttpStatus.FOUND);
 	}
 
+
 	public ResponseEntity<?> getAllVenuesByVenueType(String venuType) {
 		List<Venue> venuList = new ArrayList<Venue>();
 
@@ -232,6 +235,35 @@ public class CustomerService {
 			return new ResponseEntity<ResponseStructure<List<WeddingHall>>>(rs, HttpStatus.OK);
 		}
 		throw new InvalidVenueException("Please Check your venue type");
+	}
+
+
+	public ResponseEntity<ResponseStructure<List<Venue>>> getVenueByLocation(String location){
+		List<Venue> venues=new ArrayList<Venue>();
+		List<Venue> allVenues=venueRepository.findAll();
+		for(Venue venue:allVenues) {
+			if(venue instanceof PartyHall) {
+				if(((PartyHall) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+			else if(venue instanceof FarmHouse) {
+				if(((FarmHouse) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+			else{
+				if(((WeddingHall) venue).getLocation().equalsIgnoreCase(location)) {
+					venues.add(venue);
+				}
+			}
+		}
+		ResponseStructure<List<Venue>> rs = new ResponseStructure<List<Venue>>();
+		rs.setData(venues);
+		rs.setMessage(HttpStatus.OK.getReasonPhrase());
+		rs.setStatusCode(HttpStatus.OK.value());
+		
+		return new ResponseEntity<ResponseStructure<List<Venue>>>(rs,HttpStatus.OK);
 	}
 
 }

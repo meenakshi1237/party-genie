@@ -18,7 +18,9 @@ public class FarmHouseDao {
 		return farmHouseRepository.save(farmHouse);
 	}
 	
+
 	public List<FarmHouse> getAll(){
 		return farmHouseRepository.findAll();
 	}
+
 }
