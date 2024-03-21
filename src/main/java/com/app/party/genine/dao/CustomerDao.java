@@ -13,7 +13,6 @@ import com.app.party.genine.repository.CustomerRepository;
 
 
 @Repository
-
 public class CustomerDao {
 	
 	@Autowired

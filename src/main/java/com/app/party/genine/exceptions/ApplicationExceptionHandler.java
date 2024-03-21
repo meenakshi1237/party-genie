@@ -5,6 +5,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -21,7 +23,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
 		responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		responseStructure.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		responseStructure.setData("Invalid venue type is not allowed to save");
+		responseStructure.setData(exception.getMessage());
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.BAD_REQUEST);
 	}
@@ -32,7 +34,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
 		responseStructure.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 		responseStructure.setMessage(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-		responseStructure.setData("User is not Authorized to save the venue");
+		responseStructure.setData("User is not Authorized");
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.UNAUTHORIZED);
 	}

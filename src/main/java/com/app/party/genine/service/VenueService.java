@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import com.app.party.genine.dao.AdminDao;
+import com.app.party.genine.dao.BookingDao;
 import com.app.party.genine.dao.FarmHouseDao;
 import com.app.party.genine.dao.PartyHallDao;
 import com.app.party.genine.dao.WeddingHallDao;
@@ -19,12 +22,18 @@ import com.app.party.genine.dto.ResponseStructure;
 import com.app.party.genine.dto.VenueRequest;
 import com.app.party.genine.dto.WeddingHallResponse;
 import com.app.party.genine.entity.Admin;
+import com.app.party.genine.entity.Booking;
 import com.app.party.genine.entity.FarmHouse;
 import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
+import com.app.party.genine.exceptions.BookingNotFoundException;
+import com.app.party.genine.exceptions.FeildValidationException;
 import com.app.party.genine.exceptions.InvalidVenueException;
 import com.app.party.genine.exceptions.UnauthorizedException;
+import com.app.party.genine.exceptions.VenueAlreadyBookedException;
+import com.app.party.genine.util.BookingStatus;
+import com.app.party.genine.util.VenueHelper;
 
 @Service
 public class VenueService {
@@ -40,6 +49,13 @@ public class VenueService {
 
 	@Autowired
 	private PartyHallDao partyHallDao;
+
+
+	@Autowired
+	private BookingDao bookingDao;
+
+	@Autowired
+	private VenueHelper venueHelper;
 
 	public ResponseEntity<?> findALLVenueByLocation(int id, String location) {
 
@@ -242,13 +258,23 @@ public class VenueService {
 
 	}
 
-	public ResponseEntity<?> saveVenue(String venueType, VenueRequest venueRequest, int id) {
+	public ResponseEntity<?> saveVenue(String venueType, VenueRequest venueRequest, int id,BindingResult result) {
+		
+		if (result.hasErrors()) {
+			String message = "";
+			for (FieldError error : result.getFieldErrors()) {
+				message += error.getDefaultMessage() + ", ";
+			}
+			throw new FeildValidationException(message);
+		}
+	
 
 		Optional<Admin> validAdmin = adminDao.findAdmin(id);
 
 		if (validAdmin.isPresent()) {
 
 			List<Venue> venueList = validAdmin.get().getVenueList();
+
 
 			if (venueType.equalsIgnoreCase("farm house")) {
 
@@ -368,15 +394,103 @@ public class VenueService {
 			List<Venue> venueList = validAdmin.get().getVenueList();
 
 			ResponseStructure<List<Venue>> response = new ResponseStructure<List<Venue>>();
-			response.setStatusCode(HttpStatus.FOUND.value());
-			response.setMessage("Fethed Successfully");
+
+			response.setStatusCode(HttpStatus.OK.value());
+			response.setMessage("Fetched Successfully");
 			response.setData(venueList);
 
-			return new ResponseEntity<ResponseStructure<List<Venue>>>(response, HttpStatus.FOUND);
-
+			return new ResponseEntity<ResponseStructure<List<Venue>>>(response, HttpStatus.OK);
 		} else {
 			throw new UnauthorizedException();
 		}
 	}
+
+
+	public ResponseEntity<?> updateVenueStatus(int adminId, int venueId, BookingStatus status) {
+
+		Optional<Admin> validAdmin = adminDao.findAdmin(adminId);
+
+		if (validAdmin.isPresent()) {
+
+			for (Venue venue : validAdmin.get().getVenueList()) {
+				if (venue.getId() == venueId) {
+
+					Booking bookingAssigned = bookingDao.findByVenueId(venueId);
+
+					if (bookingAssigned != null) {
+
+						if (venue instanceof PartyHall) {
+
+							if (venueHelper.validateUpdation(bookingAssigned.getTillDate())) {
+
+								PartyHall partyHall = (PartyHall) venue;
+								partyHall.setStatus(status);
+
+								ResponseStructure<PartyHall> response=new ResponseStructure<PartyHall>();
+								response.setData(partyHallDao.save(partyHall));
+								response.setStatusCode(HttpStatus.OK.value());
+								response.setMessage("Updated Successfully");
+								
+								return new ResponseEntity<ResponseStructure<PartyHall>>(response,HttpStatus.OK);
+							} else {
+								throw new VenueAlreadyBookedException("Already Booked");
+							}
+
+						}
+						else if (venue instanceof FarmHouse) {
+
+							if (venueHelper.validateUpdation(bookingAssigned.getTillDate())) {
+
+								FarmHouse farmHouse = (FarmHouse) venue;
+								farmHouse.setStatus(status);
+
+								farmHouseDao.save(farmHouse);
+								
+								ResponseStructure<FarmHouse> response=new ResponseStructure<FarmHouse>();
+								response.setData(farmHouseDao.save(farmHouse));
+								response.setStatusCode(HttpStatus.OK.value());
+								response.setMessage("Updated Successfully");
+								
+								return new ResponseEntity<ResponseStructure<FarmHouse>>(response,HttpStatus.OK);
+							} else {
+								throw new VenueAlreadyBookedException("Already Booked");
+							}
+						}
+						 else if (venue instanceof WeddingHall) {
+							if (venueHelper.validateUpdation(bookingAssigned.getTillDate())) {
+
+								WeddingHall weddingHall = (WeddingHall) venue;
+								weddingHall.setStatus(status);
+
+								weddingHallDao.save(weddingHall);
+								
+								ResponseStructure<WeddingHall> response=new ResponseStructure<WeddingHall>();
+								response.setData(weddingHallDao.save(weddingHall));
+								response.setStatusCode(HttpStatus.OK.value());
+								response.setMessage("Updated Successfully");
+								
+								return new ResponseEntity<ResponseStructure<WeddingHall>>(response,HttpStatus.OK);
+							} else {
+								throw new VenueAlreadyBookedException("Already Booked");
+							}
+						}
+					} else {
+						throw new BookingNotFoundException("Updation not possible because venue is not booked yet");
+					}
+
+				}
+				
+			}
+			
+			throw new InvalidVenueException("Venue Id is not found");
+			
+
+		} else {
+			throw new UnauthorizedException();
+		}
+
+//		return null;
+	}
+
 
 }
