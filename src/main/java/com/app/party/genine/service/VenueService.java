@@ -437,7 +437,7 @@ public class VenueService {
 							}
 
 						}
-						if (venue instanceof FarmHouse) {
+						else if (venue instanceof FarmHouse) {
 
 							if (venueHelper.validateUpdation(bookingAssigned.getTillDate())) {
 
@@ -456,7 +456,7 @@ public class VenueService {
 								throw new VenueAlreadyBookedException("Already Booked");
 							}
 						}
-						if (venue instanceof WeddingHall) {
+						 else if (venue instanceof WeddingHall) {
 							if (venueHelper.validateUpdation(bookingAssigned.getTillDate())) {
 
 								WeddingHall weddingHall = (WeddingHall) venue;
@@ -474,21 +474,22 @@ public class VenueService {
 								throw new VenueAlreadyBookedException("Already Booked");
 							}
 						}
-
 					} else {
 						throw new BookingNotFoundException("Updation not possible because venue is not booked yet");
 					}
 
-				} else {
-					throw new InvalidVenueException("Venue Id is not found");
 				}
+				
 			}
+			
+			throw new InvalidVenueException("Venue Id is not found");
+			
 
 		} else {
 			throw new UnauthorizedException();
 		}
 
-		return null;
+//		return null;
 	}
 
 

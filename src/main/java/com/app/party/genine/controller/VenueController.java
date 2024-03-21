@@ -75,7 +75,7 @@ public class VenueController {
 
 	@Operation(description = "To Update the status of venue by Admin", summary = "Venue Status will be Updated")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200",description = "Ok"),@ApiResponse(responseCode = "401",description = "`NOT AUTHORIZED`", content = @Content),@ApiResponse(responseCode = "404",description = "`NOT FOUND`", content = @Content),@ApiResponse(responseCode = "400",description = "`BAD REQUEST`", content = @Content)})
-	@PatchMapping(value="/{adminId}/{venueId}/{status}",produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	@PatchMapping(value="/{adminId}/{venueId}",produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<?> updateVenueStatus(@PathVariable int adminId,@PathVariable int venueId,@RequestParam BookingStatus status){
 		return venueService.updateVenueStatus(adminId,venueId,status);
 	}
