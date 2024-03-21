@@ -45,7 +45,7 @@ public class BookingService {
 			if(venue instanceof FarmHouse) {
 				FarmHouse farmHouse=(FarmHouse)venue;
 				if(farmHouse.getStatus().toString().equalsIgnoreCase("available")) {
-					booking.setTotalCharges(bookingRequest.getNoOFDays()*farmHouse.getRentPerDay());
+					booking.setTotalCharges(bookingRequest.getNoOfDays()*farmHouse.getRentPerDay());
 				}
 				else {
 					throw new VenueAlreadyBookedException("Venue is Already Booked");
@@ -55,7 +55,7 @@ public class BookingService {
 			else if(venue instanceof PartyHall) {
 				PartyHall partyHall=(PartyHall)venue;
 				if(partyHall.getStatus().toString().equalsIgnoreCase("available")) {
-					booking.setTotalCharges((bookingRequest.getNoOFDays()*partyHall.getMenuPricePerPlate()*partyHall.getNoOfPeople()));
+					booking.setTotalCharges((bookingRequest.getNoOfDays()*partyHall.getMenuPricePerPlate()*partyHall.getNoOfPeople()));
 				}
 				else {
 					throw new VenueAlreadyBookedException("Venue is Already Booked");
@@ -65,18 +65,18 @@ public class BookingService {
 			else {
 				WeddingHall weddingHall=(WeddingHall) venue;
 				if(weddingHall.getStatus().toString().equalsIgnoreCase("available")) {
-					booking.setTotalCharges(bookingRequest.getNoOFDays()*weddingHall.getRentPerDay());
+					booking.setTotalCharges(bookingRequest.getNoOfDays()*weddingHall.getRentPerDay());
 				}
 				else {
 					throw new VenueAlreadyBookedException("Venue is Already Booked");
 				}
 				
 			}
-			booking.setNoOfDays(bookingRequest.getNoOFDays());
+			booking.setNoOfDays(bookingRequest.getNoOfDays());
 			booking.setCustomer(customer);
 			booking.setEventDate(bookingRequest.getEventDate());
 			booking.setVenue(venue);
-			Date endDate= Date.valueOf(calculateEndDate(bookingRequest.getEventDate().toLocalDate(),bookingRequest.getNoOFDays()));
+			Date endDate= Date.valueOf(calculateEndDate(bookingRequest.getEventDate().toLocalDate(),bookingRequest.getNoOfDays()));
 			booking.setTillDate(endDate);
 			
 			Booking saveBooking=bookingDao.createBooking(booking);

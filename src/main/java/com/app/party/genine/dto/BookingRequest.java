@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class BookingRequest {
 	
-	private int noOFDays;
+	private int noOfDays;
 	private Date eventDate;
 	private int venueId;
 	private String venueType;
