@@ -23,7 +23,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
 		responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		responseStructure.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
-		responseStructure.setData("Invalid venue type is not allowed to save");
+		responseStructure.setData(exception.getMessage());
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.BAD_REQUEST);
 	}
