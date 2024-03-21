@@ -1,6 +1,5 @@
 package com.app.party.genine.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import com.app.party.genine.dao.AdminDao;
 import com.app.party.genine.dao.BookingDao;
@@ -26,6 +27,7 @@ import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
 import com.app.party.genine.exceptions.BookingNotFoundException;
+import com.app.party.genine.exceptions.FeildValidationException;
 import com.app.party.genine.exceptions.InvalidVenueException;
 import com.app.party.genine.exceptions.UnauthorizedException;
 import com.app.party.genine.exceptions.VenueAlreadyBookedException;
@@ -53,8 +55,17 @@ public class VenueService {
 	@Autowired
 	private VenueHelper venueHelper;
 
-	public ResponseEntity<?> saveVenue(String venueType, VenueRequest venueRequest, int id) {
-
+	public ResponseEntity<?> saveVenue(String venueType, VenueRequest venueRequest, int id,BindingResult result) {
+		
+		
+		if (result.hasErrors()) {
+			String message = "";
+			for (FieldError error : result.getFieldErrors()) {
+				message += error.getDefaultMessage() + ", ";
+			}
+			throw new FeildValidationException(message);
+		}
+		
 		Optional<Admin> validAdmin = adminDao.findAdmin(id);
 
 		if (validAdmin.isPresent()) {
@@ -179,11 +190,11 @@ public class VenueService {
 			List<Venue> venueList = validAdmin.get().getVenueList();
 
 			ResponseStructure<List<Venue>> response = new ResponseStructure<List<Venue>>();
-			response.setStatusCode(HttpStatus.FOUND.value());
-			response.setMessage("Fethed Successfully");
+			response.setStatusCode(HttpStatus.OK.value());
+			response.setMessage("Fetched Successfully");
 			response.setData(venueList);
 
-			return new ResponseEntity<ResponseStructure<List<Venue>>>(response, HttpStatus.FOUND);
+			return new ResponseEntity<ResponseStructure<List<Venue>>>(response, HttpStatus.OK);
 
 		} else {
 			throw new UnauthorizedException();
