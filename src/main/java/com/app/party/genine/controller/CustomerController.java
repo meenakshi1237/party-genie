@@ -99,7 +99,6 @@ public class CustomerController {
 	
 	@GetMapping("/getVenues")
 	public RedirectView redirectMethod(@RequestParam("VenueType") String venueType,RedirectAttributes attributes) {
-		attributes.addFlashAttribute("flashAttribute", "getVenues");
 		attributes.addAttribute("VenueType", venueType);
 		if(venueType.equalsIgnoreCase("Farm-house")) {
 		    return new RedirectView("/customer/venues/FarmHouses");
