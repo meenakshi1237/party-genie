@@ -1,5 +1,7 @@
 package com.app.party.genine.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,10 @@ public class PartyHallDao {
 	public String delete(PartyHall partyHall) {
 		partyHallRepository.delete(partyHall);
 		 return "Party hall deleted successfully!";
+
+	public List<PartyHall> getAll(){
+		return partyHallRepository.findAll();
+
 	}
 
 }

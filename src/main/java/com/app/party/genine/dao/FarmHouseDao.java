@@ -16,8 +16,15 @@ public class FarmHouseDao {
 		return farmHouseRepository.save(farmHouse);
 	}
 	
+
 	public String delete(FarmHouse farmHouse) {
 		farmHouseRepository.delete(farmHouse);
 		return "FarmHouse Hall deleted successfully";
 	}
+
+	public List<FarmHouse> getAll(){
+		return farmHouseRepository.findAll();
+	}
+
+
 }
