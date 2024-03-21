@@ -25,18 +25,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class BookingController {
 	@Autowired
 	private BookingService bookingService;
-	
+
 	@Operation(description = "To Create Booking", summary = "Booking will be created")
-	@ApiResponses(value = {@ApiResponse(responseCode = "201",description = "Booking Created"),@ApiResponse(responseCode = "404",description = "`NOT FOUND`", content = @Content),@ApiResponse(responseCode = "401",description = "`NOT AUTHORIZED`", content = @Content)})
-	@PostMapping(value="/booking",consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<ResponseStructure<BookingResponse>> createBooking(@RequestBody BookingRequest bookingRequest){
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Booking Created"),
+			@ApiResponse(responseCode = "404", description = "`NOT FOUND`", content = @Content),
+			@ApiResponse(responseCode = "401", description = "`NOT AUTHORIZED`", content = @Content) })
+	@PostMapping(value = "/booking", consumes = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<ResponseStructure<BookingResponse>> createBooking(
+			@RequestBody BookingRequest bookingRequest) {
 		return bookingService.createBooking(bookingRequest);
 	}
-	
+
 	@Operation(description = "To Cancel Booking", summary = "Booking will be cancled")
-	@ApiResponses(value = {@ApiResponse(responseCode = "201",description = "Booking Cancled"),@ApiResponse(responseCode = "404",description = "`NOT FOUND`", content = @Content),@ApiResponse(responseCode = "401",description = "`NOT AUTHORIZED`", content = @Content)})
-	@DeleteMapping(value = "booking",produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<ResponseStructure<String>> cancelBooking(@RequestParam int bookingId){
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Booking Cancled"),
+			@ApiResponse(responseCode = "404", description = "`NOT FOUND`", content = @Content),
+			@ApiResponse(responseCode = "401", description = "`NOT AUTHORIZED`", content = @Content) })
+	@DeleteMapping(value = "booking", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseEntity<ResponseStructure<String>> cancelBooking(@RequestParam int bookingId) {
 		return bookingService.calcelBooking(bookingId);
 	}
 

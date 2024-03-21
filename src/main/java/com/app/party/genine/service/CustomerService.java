@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.party.genine.dao.CustomerDao;
 import com.app.party.genine.dao.FarmHouseDao;
@@ -22,11 +23,8 @@ import com.app.party.genine.entity.FarmHouse;
 import com.app.party.genine.entity.PartyHall;
 import com.app.party.genine.entity.Venue;
 import com.app.party.genine.entity.WeddingHall;
-
 import com.app.party.genine.exceptions.FeildValidationException;
-
 import com.app.party.genine.exceptions.IdNotPresentException;
-import com.app.party.genine.exceptions.InvalidVenueException;
 import com.app.party.genine.repository.VenueRepository;
 
 @Service
@@ -176,68 +174,7 @@ public class CustomerService {
 
 		return new ResponseEntity<ResponseStructure<Customer>>(rs, HttpStatus.FOUND);
 	}
-
-
-	public ResponseEntity<?> getAllVenuesByVenueType(String venuType) {
-		List<Venue> venuList = new ArrayList<Venue>();
-
-		if (venuType.equalsIgnoreCase("Farm-house")) {
-			List<FarmHouse> farmHouses = farmHouseDao.getAll();
-			for (Venue v : farmHouses) {
-			
-				if (v instanceof FarmHouse) {
-					Venue obj = (Venue) v;
-
-					venuList.add(obj);
-				}
-			}
-
-			ResponseStructure<List<Venue>> rs = new ResponseStructure<List<Venue>>();
-			rs.setData(venuList);
-			rs.setMessage(HttpStatus.OK.getReasonPhrase());
-			rs.setStatusCode(HttpStatus.OK.value());
-
-			return new ResponseEntity<ResponseStructure<List<Venue>>>(rs, HttpStatus.OK);
-		}
-
-		if (venuType.equalsIgnoreCase("Party-hall")) {
-			List<PartyHall> partyHalls = partyHallDao.getAll();
-
-			for (Venue v : partyHalls) {
-				if (v instanceof FarmHouse) {
-					Venue obj = (Venue) v;
-
-					venuList.add(obj);
-				}
-			}
-			ResponseStructure<List<PartyHall>> rs = new ResponseStructure<List<PartyHall>>();
-			rs.setData(partyHalls);
-			rs.setMessage(HttpStatus.OK.getReasonPhrase());
-			rs.setStatusCode(HttpStatus.OK.value());
-
-			return new ResponseEntity<ResponseStructure<List<PartyHall>>>(rs, HttpStatus.OK);
-		}
-
-		if (venuType.equalsIgnoreCase("Wedding-hall")) {
-			List<WeddingHall> weddingHalls = weddingHallDao.getAll();
-			for (Venue v : weddingHalls) {
-				if (v instanceof FarmHouse) {
-					Venue obj = (Venue) v;
-
-					venuList.add(obj);
-				}
-			}
-			ResponseStructure<List<WeddingHall>> rs = new ResponseStructure<List<WeddingHall>>();
-			rs.setData(weddingHalls);
-			rs.setMessage(HttpStatus.OK.getReasonPhrase());
-			rs.setStatusCode(HttpStatus.OK.value());
-
-			return new ResponseEntity<ResponseStructure<List<WeddingHall>>>(rs, HttpStatus.OK);
-		}
-		throw new InvalidVenueException("Please Check your venue type");
-	}
-
-
+	
 	public ResponseEntity<ResponseStructure<List<Venue>>> getVenueByLocation(String location){
 		List<Venue> venues=new ArrayList<Venue>();
 		List<Venue> allVenues=venueRepository.findAll();
@@ -265,5 +202,46 @@ public class CustomerService {
 		
 		return new ResponseEntity<ResponseStructure<List<Venue>>>(rs,HttpStatus.OK);
 	}
+	
+	public ResponseEntity<?> getAllVenuesByFarmHouse(String venuType) {
+		
+			List<FarmHouse> farmHouses = farmHouseDao.getAll();
+			
+			ResponseStructure<List<FarmHouse>> rs = new ResponseStructure<List<FarmHouse>>();
+			rs.setData(farmHouses);
+			rs.setMessage(HttpStatus.OK.getReasonPhrase());
+			rs.setStatusCode(HttpStatus.OK.value());
 
+			return new ResponseEntity<ResponseStructure<List<FarmHouse>>>(rs, HttpStatus.OK);
+		
+	}
+	
+	
+	public ResponseEntity<?> getAllVenuesByPartyHall(@RequestParam("VenueType") String venuType){
+		
+			List<PartyHall> partyHalls = partyHallDao.getAll();
+
+			
+			ResponseStructure<List<PartyHall>> rs = new ResponseStructure<List<PartyHall>>();
+			rs.setData(partyHalls);
+			rs.setMessage(HttpStatus.OK.getReasonPhrase());
+			rs.setStatusCode(HttpStatus.OK.value());
+
+			return new ResponseEntity<ResponseStructure<List<PartyHall>>>(rs, HttpStatus.OK);
+		
+	}
+	
+	public ResponseEntity<?> getVenueByWeddingHall(@RequestParam("VenueType") String venuType){
+		
+			List<WeddingHall> weddingHalls = weddingHallDao.getAll();
+			
+			ResponseStructure<List<WeddingHall>> rs = new ResponseStructure<List<WeddingHall>>();
+			rs.setData(weddingHalls);
+			rs.setMessage(HttpStatus.OK.getReasonPhrase());
+			rs.setStatusCode(HttpStatus.OK.value());
+
+			return new ResponseEntity<ResponseStructure<List<WeddingHall>>>(rs, HttpStatus.OK);
+		
+	}
+	
 }
