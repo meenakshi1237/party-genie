@@ -34,7 +34,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 		ResponseStructure<String> responseStructure=new ResponseStructure<String>();
 		responseStructure.setStatusCode(HttpStatus.UNAUTHORIZED.value());
 		responseStructure.setMessage(HttpStatus.UNAUTHORIZED.getReasonPhrase());
-		responseStructure.setData("User is not Authorized to save the venue");
+		responseStructure.setData("User is not Authorized");
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure,HttpStatus.UNAUTHORIZED);
 	}

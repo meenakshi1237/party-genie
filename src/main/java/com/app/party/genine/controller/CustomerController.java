@@ -49,7 +49,7 @@ public class CustomerController {
 	// this method for updating customer
 	@Operation(description = "To Update Customer", summary = "customer details will be updated")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200",description = "Details Updated"),@ApiResponse(responseCode = "404",description = "`NOT FOUND`", content = @Content)})
-	@PutMapping(value="/{customerId}",produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	@PutMapping(value="/{customerId}",consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<ResponseStructure<CustomerResponse>> updateCustomer(
 			@Valid @RequestBody CustomerRequest customerRequest, @PathVariable int customerId, BindingResult result) {
 		 

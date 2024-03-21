@@ -17,8 +17,15 @@ public class PartyHallDao {
 		return partyHallRepository.save(partyHall);
 	}
 	
+	public String delete(PartyHall partyHall) {
+		partyHallRepository.delete(partyHall);
+		 return "Party hall deleted successfully!";
+		 
+	}
+
 	public List<PartyHall> getAll(){
 		return partyHallRepository.findAll();
+
 	}
 
 }
