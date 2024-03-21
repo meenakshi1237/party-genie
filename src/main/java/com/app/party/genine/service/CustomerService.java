@@ -112,9 +112,10 @@ public class CustomerService {
 			if (customerRequest.getPassword() != null) {
 				customer.setPassword(customerRequest.getPassword());
 			}
-			if (customerRequest.getPhone() != 0) {
+			if (customerRequest.getPhone() > 6000000000l && customerRequest.getPhone() < 9999999999l ) {
 				customer.setPhone(customerRequest.getPhone());
 			}
+			
 
 			customer = customerDao.saveCustomer(customer);
 

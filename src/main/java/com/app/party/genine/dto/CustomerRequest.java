@@ -8,9 +8,9 @@ import lombok.Data;
 
 @Data
 public class CustomerRequest {
-	@Size(min = 3, message = "password should have atleast 3 characters")
+	@Size(min = 3, message = "Name should have atleast 3 characters")
 	private String name;
-	@Min(value = 6000000000l, message = "mobile number should srart from 6")
+	@Min(value = 6000000000l, message = "Invalid mobile number")
 	@Max(value = 9999999999l, message = "mobile number must have 10 numbers")
 	private long phone;
 	@Email(message = "please enter valid email address")
