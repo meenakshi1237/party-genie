@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.party.genine.dao.AdminDao;
 import com.app.party.genine.dto.AdminRequest;
+import com.app.party.genine.dto.AdminResponse;
 import com.app.party.genine.dto.ResponseStructure;
 import com.app.party.genine.entity.Admin;
 import com.app.party.genine.exceptions.UnauthorizedException;
@@ -41,12 +42,17 @@ public class AdminService {
 			
 			Admin updatedAdmin=adminDao.save(validAdmin);
 			
-			ResponseStructure<Admin> response=new ResponseStructure<Admin>();
+			AdminResponse adminResponse=new AdminResponse();
+			adminResponse.setEmail(updatedAdmin.getEmail());
+			adminResponse.setName(updatedAdmin.getName());
+			adminResponse.setPhone(updatedAdmin.getPhone());
+			
+			ResponseStructure<AdminResponse> response=new ResponseStructure<AdminResponse>();
 			response.setStatusCode(HttpStatus.OK.value());
-			response.setData(updatedAdmin);
+			response.setData(adminResponse);
 			response.setMessage("Updated Successfully");
 			
-			return new ResponseEntity<ResponseStructure<Admin>>(response,HttpStatus.OK);
+			return new ResponseEntity<ResponseStructure<AdminResponse>>(response,HttpStatus.OK);
 		}else {
 			throw new UnauthorizedException();
 		}

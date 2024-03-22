@@ -18,6 +18,7 @@ public class AdminRequest {
 	private String email;
 	@Size(min = 5, message = "password should have atleast 5 characters")
 	private String password;
+	
 	public String getName() {
 		return name;
 	}
