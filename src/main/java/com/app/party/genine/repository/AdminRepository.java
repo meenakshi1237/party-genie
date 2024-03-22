@@ -1,9 +1,12 @@
 package com.app.party.genine.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.app.party.genine.entity.Admin;
 
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
-
+	
+	public Optional<Admin> findByEmail(String email);
 }

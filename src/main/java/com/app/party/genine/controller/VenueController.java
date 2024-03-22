@@ -45,8 +45,8 @@ public class VenueController {
 	@Operation(description = "To create venue", summary = "Venue will be created")
 	@ApiResponses(value = {@ApiResponse(responseCode = "201",description = "Venue Created"),@ApiResponse(responseCode = "401",description = "`NOT AUTHORIZED`", content = @Content)})
 	@PostMapping(value="/{adminId}/{venueType}",consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<?> saveVenue(@PathVariable String venueType,@RequestBody VenueRequest venueRequest,@PathVariable int adminId){
-		return venueService.saveVenue(venueType,venueRequest,adminId);
+	public ResponseEntity<?> saveVenue(@PathVariable String venueType,@Valid @RequestBody VenueRequest venueRequest,BindingResult result,@PathVariable int adminId){
+		return venueService.saveVenue(venueType, venueRequest, adminId, result);
 	}
 	
 	@Operation(description = "To delete a venue", summary = "venue record will be deleted")

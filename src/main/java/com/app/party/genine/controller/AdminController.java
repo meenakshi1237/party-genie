@@ -25,9 +25,9 @@ public class AdminController {
 	
 	@Operation(description = "To Update the Admin Details", summary = "Admin Details will be updated")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200",description = "OK"),@ApiResponse(responseCode = "401",description = "`NOT AUTHORIZED`", content = @Content)})
-	@PatchMapping("/{id}")
-	public ResponseEntity<?> updateAdmin(@PathVariable int id,@RequestBody AdminRequest adminRequest){
-		return adminService.updadteAdmin(id,adminRequest);
+	@PatchMapping("/{adminId}")
+	public ResponseEntity<?> updateAdmin(@PathVariable int adminId,@RequestBody AdminRequest adminRequest){
+		return adminService.updadteAdmin(adminId,adminRequest);
 	}
 
 }
